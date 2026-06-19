@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Summer Smackdown — Seward Memorial Library</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A142A;--navy-mid:#14244C;--red:#8B0000;--red-light:#FDF1F1;--red-mid:#A31D1D;
+  --blue:#0F3D7A;--blue-light:#EEF4FC;--blue-mid:#124E96;--gold:#C6920E;--gold-light:#FCF7EB;
+  --white:#FFFFFF;--off:#F9F7F4;--text:#161616;--muted:#4D4D4D;--light:#707070;--border:#D1C7BD;--border-s:#B0A59A;
+  --green:#1B5E20;--green-light:#E8F5E9;--r:10px;--rl:16px;--shadow:0 2px 12px rgba(0,0,0,.08);--shadow-lg:0 6px 28px rgba(0,0,0,.12);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--off);color:var(--text);min-height:100vh;font-size:15px;line-height:1.5}
+h1,h2,h3,h4{line-height:1.2}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+button:disabled{cursor:not-allowed;opacity:.6}
+input,select,textarea{font-family:inherit;font-size:15px}
+a{color:var(--blue-mid);font-weight:600}
+.app{max-width:700px;margin:0 auto;padding:0 0 40px}
+.page{display:none}.page.active{display:block}
+.hdr{background:linear-gradient(135deg,#0A142A 0%,#152754 45%,#7F1D1D 100%);padding:24px 20px 20px;position:relative;overflow:hidden;border-bottom:3px solid var(--gold)}
+.hdr::after{content:'★';position:absolute;right:16px;top:8px;font-size:72px;opacity:.05;color:#fff}
+.hdr-badge{display:inline-block;background:var(--white);color:#7F1D1D;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.hdr h1{color:#fff;font-size:26px;font-weight:800;margin-bottom:2px;letter-spacing:-.2px}
+.hdr-sub{color:rgba(255,255,255,.9);font-size:14px;margin-bottom:14px;font-weight:500}
+.hdr-vs{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.hdr-team{color:#fff;font-weight:700;font-size:15px;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.hdr-vs-badge{background:var(--gold);color:#0A142A;font-weight:800;font-size:11px;padding:3px 12px;border-radius:20px;letter-spacing:.5px}
+.prog-wrap{margin-top:4px}
+.prog-labels{display:flex;justify-content:space-between;color:#fff;font-size:13px;font-weight:700;margin-bottom:6px}
+.prog-track{height:10px;background:rgba(0,0,0,.35);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.prog-fill{height:100%;background:linear-gradient(90deg,#FFD700,var(--gold));border-radius:20px;transition:width .5s ease;min-width:3px}
+.hdr-signout{position:absolute;top:16px;right:16px;color:#fff;font-size:12px;font-weight:700;background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.7);border-radius:8px;padding:6px 12px;cursor:pointer}
+.hdr-signout:hover{background:rgba(255,255,255,.15)}
+.nav{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 3px 6px rgba(0,0,0,.06)}
+.nav-btn{flex:1;padding:12px 4px 10px;font-size:12px;font-weight:700;color:var(--muted);background:transparent;border:none;border-bottom:3.5px solid transparent;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.nav-icon{font-size:20px}
+.nav-btn.active{color:var(--navy);border-bottom-color:var(--red-mid);background:var(--blue-light)}
+.nav-btn:hover:not(.active){background:var(--off)}
+.auth-wrap{padding:24px 16px}
+.auth-card{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:24px 20px;max-width:380px;margin:0 auto 16px;box-shadow:var(--shadow)}
+.auth-title{font-size:20px;font-weight:700;margin-bottom:4px;color:var(--navy)}
+.auth-sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.fg{margin-bottom:14px}
+.lbl{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.inp{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:15px;transition:border-color .2s;background:#fff;color:var(--text)}
+.inp:focus{border-color:var(--blue-mid);outline:none}
+.btn{padding:11px 20px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;border:none}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-mid)}
+.btn-gold{background:var(--gold);color:var(--navy);font-weight:800}.btn-gold:hover{opacity:.9}
+.btn-outline{background:transparent;color:var(--navy);border:2px solid var(--navy)}.btn-outline:hover{background:var(--blue-light)}
+.btn-red{background:var(--red-mid);color:#fff}.btn-red:hover{opacity:.9}
+.btn-full{width:100%;justify-content:center}
+.btn-sm{padding:6px 14px;font-size:13px;font-weight:700;border-radius:8px;min-height:36px}
+.auth-sw{text-align:center;font-size:14px;color:var(--muted);margin-top:14px}
+.auth-sw a{color:var(--blue-mid);cursor:pointer;text-decoration:underline}
+.err{background:var(--red-light);color:var(--red);border:1.5px solid var(--red-mid);border-radius:var(--r);padding:10px 14px;font-size:14px;font-weight:600;margin-bottom:12px}
+.ok{background:var(--green-light);color:var(--green);border:1.5px solid var(--green);border-radius:var(--r);padding:10px 14px;font-size:14px;font-weight:600;margin-bottom:12px}
+.dash,.log-wrap,.prize-wrap,.cat-wrap,.lb-wrap{padding:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px 8px;text-align:center}
+.stat-n{font-size:26px;font-weight:800;color:var(--navy)}
+.stat-l{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.5px;margin-top:1px}
+.sec-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.sec-title span{font-size:13px;color:var(--muted);font-weight:500}
+.punch-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.pcard{background:#fff;border:1.5px solid var(--border);border-radius:var(--rl);padding:16px 16px 12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.pcard.done{border-color:var(--gold);background:var(--gold-light);border-width:2px}
+.pcard-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.pcard-num{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.pcard-status{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+.s-active{background:var(--blue-light);color:var(--blue-mid)}
+.s-done{background:var(--gold-light);color:#854F0B;border:1px solid var(--gold)}
+.punches{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+.punch{width:50px;height:50px;border-radius:50%;border:2px dashed var(--border-s);background:var(--off);display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;position:relative;flex-shrink:0}
+.punch.filled{background:var(--red-mid);border:2px solid var(--red-mid);color:#fff}
+.punch.filled-d{background:var(--blue-mid);border:2px solid var(--blue-mid);color:#fff}
+.punch-n{font-size:11px;color:var(--light);font-weight:700}
+.punch-x2{position:absolute;top:-5px;right:-5px;background:var(--gold);color:var(--navy);font-size:10px;font-weight:800;border-radius:10px;padding:1px 6px;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.pcard-books{margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
+.pb-row{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:13px;color:var(--text)}
+.pb-title{color:var(--text);font-weight:600}
+.badge-r{background:var(--red-mid);color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;white-space:nowrap}
+.badge-b{background:var(--blue-mid);color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;white-space:nowrap}
+.dp-notice{background:linear-gradient(135deg,var(--red-light),var(--blue-light));border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:16px;font-size:14px;color:var(--text)}
+.dp-notice strong{color:var(--navy)}
+.flag-words{display:flex;gap:7px;margin-top:7px}
+.fw{padding:3px 12px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:.5px}
+.fw-r{background:var(--red-mid);color:#fff}
+.fw-w{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.fw-b{background:var(--blue-mid);color:#fff}
+.log-form{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:18px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.log-form-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px}
+.radio-row{display:flex;gap:8px;margin-bottom:0}
+.ro{flex:1;padding:10px;border:2px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .2s;text-align:center;font-size:14px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:6px;justify-content:center}
+.ro.sel{border-color:var(--navy);background:var(--blue-light);color:var(--navy)}
+.dp-indicator{display:none;background:linear-gradient(135deg,var(--red-light),var(--blue-light));border:2px dashed var(--border-s);border-radius:var(--r);padding:10px 14px;font-size:14px;margin-top:8px;color:var(--navy);align-items:center;gap:7px}
+.dp-indicator.show{display:flex}
+.books-list{margin-top:14px}
+.book-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);margin-bottom:7px;gap:8px}
+.bi-info{flex:1;min-width:0}
+.bi-title{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy)}
+.bi-meta{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
+.btn-rm{background:transparent;border:none;color:var(--light);font-size:18px;font-weight:700;cursor:pointer;padding:4px 8px;border-radius:6px}
+.btn-rm:hover{color:var(--red);background:var(--red-light)}
+.cat-tip{background:var(--blue-light);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;margin-bottom:14px;color:var(--navy);font-weight:500}
+.cat-hd{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.cat-row{display:flex;gap:8px;margin-bottom:9px}
+.cat-inp{flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:15px;background:#fff;transition:border-color .2s;color:var(--text);min-width:0}
+.cat-inp:focus{border-color:var(--blue-mid);outline:none}
+.cat-sel{padding:10px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:#fff;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;flex-shrink:0}
+.cat-sel:focus{border-color:var(--blue-mid);outline:none}
+.cat-btns{display:flex;gap:8px;margin-bottom:9px}
+.cat-note{font-size:13px;color:var(--muted)}
+.sr-item{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:9px;display:flex;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.sr-cover{width:48px;height:68px;border-radius:6px;flex-shrink:0;background:var(--blue-light);display:flex;align-items:center;justify-content:center;color:var(--blue-mid);font-size:20px;object-fit:cover}
+.sr-info{flex:1;min-width:0}
+.sr-title{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:2px;line-height:1.3}
+.sr-author{font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:500}
+.sr-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
+.sr-tag{font-size:11px;padding:3px 8px;border-radius:10px;background:var(--off);color:var(--text);border:1.5px solid var(--border);font-weight:700}
+.sr-tag-r{background:var(--red-mid);color:#fff;border-color:transparent}
+.sr-tag-b{background:var(--blue-mid);color:#fff;border-color:transparent}
+.sr-acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+.no-res{text-align:center;padding:28px;color:var(--muted);font-size:14px}
+.loading{text-align:center;padding:18px;color:var(--muted);font-size:14px;font-weight:600}
+.prize-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.prize-hdr-left h2{font-size:18px;font-weight:700;margin-bottom:2px;color:var(--navy)}
+.prize-hdr-left p{font-size:14px;color:var(--muted)}
+.entries-badge{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:2px solid var(--navy);border-radius:20px;padding:6px 14px;font-size:14px;font-weight:700;color:var(--navy);flex-shrink:0}
+.entries-badge strong{color:var(--red-mid);font-size:15px}
+.entries-tally{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.e-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:13px;border:1.5px solid var(--border);color:var(--muted);font-weight:600}
+.e-chip.active{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue-mid);border-width:2px}
+.no-entries-msg{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--text);margin-bottom:14px;line-height:1.5}
+.no-entries-msg strong{color:var(--navy)}
+.baskets{display:flex;flex-direction:column;gap:10px}
+.basket{background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:border-color .15s}
+.basket.has-entry{border:2px solid var(--blue-mid);background:var(--blue-light)}
+.basket-hd{display:flex;align-items:center;gap:11px;padding:14px 15px;cursor:pointer;min-height:46px;-webkit-tap-highlight-color:transparent}
+.basket-hd:hover{background:var(--off)}
+.b-icon{width:38px;height:38px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.b-meta{flex:1;min-width:0}
+.b-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy)}
+.b-sub{font-size:13px;color:var(--muted);font-weight:500}
+.b-hd-r{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.e-pill{display:inline-flex;align-items:center;gap:4px;background:var(--blue-mid);color:#fff;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.chevron{font-size:15px;color:var(--muted);font-weight:700;transition:transform .2s}
+.basket.open .chevron{transform:rotate(180deg)}
+.basket-body{display:none;border-top:1px solid var(--border);background:#fff}
+.basket.open .basket-body{display:block}
+.prize-list{padding:4px 15px 0}
+.prize-row{display:flex;align-items:baseline;gap:8px;padding:9px 0;border-bottom:1px solid var(--off)}
+.prize-row:last-child{border-bottom:none}
+.pr-check{font-size:13px;color:var(--green);font-weight:700;flex-shrink:0}
+.pr-name{flex:1;font-size:14px;line-height:1.4;font-weight:500;color:var(--text)}
+.pr-val{font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.basket-ft{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px;flex-wrap:wrap;background:var(--off);border-top:1px solid var(--border)}
+.basket-ft-l{font-size:13px;color:var(--text);font-weight:600}
+.enter-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--r);border:2px solid var(--border-s);background:var(--white);color:var(--text);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;min-height:44px;white-space:nowrap}
+.enter-btn:hover:not(:disabled){background:var(--blue-light);border-color:var(--blue-mid)}
+.enter-btn:disabled{opacity:.4;cursor:not-allowed}
+.enter-btn.entered{background:var(--green);border-color:var(--green);color:#fff}
+.team-banner{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
+.team{text-align:center}
+.team-name{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.t-seward .team-name{color:var(--red-mid)}
+.t-york .team-name{color:var(--blue-mid)}
+.team-score{font-size:32px;font-weight:800}
+.t-seward .team-score{color:var(--navy)}
+.t-york .team-score{color:var(--blue-mid)}
+.team-readers{font-size:12px;color:var(--muted);font-weight:600;margin-top:1px}
+.vs-div{font-size:18px;font-weight:800;color:var(--light)}
+.score-bar{border-radius:var(--r);overflow:hidden;margin-bottom:16px;height:14px;display:flex;background:#E0E0E0;border:1px solid var(--border)}
+.sb-seward{background:var(--red-mid);transition:width .7s ease}
+.sb-york{background:var(--blue-mid);flex:1}
+.lb-updated{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:14px;text-align:center}
+.alert{background:var(--gold-light);border:2px solid var(--gold);border-radius:var(--r);padding:12px 14px;font-size:14px;font-weight:700;margin-bottom:14px;color:#684A00;text-align:center}
+.top-readers{background:#fff;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:16px}
+.tr-hdr{padding:12px 14px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700;color:var(--navy);background:var(--off)}
+.reader-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--off)}
+.reader-row:last-child{border-bottom:none}
+.reader-row.me{background:linear-gradient(135deg,#FFF3D1,#fff);border-left:4px solid var(--gold)}
+.rank{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.r1{background:var(--gold);color:var(--navy)}
+.r2{background:#A0A0A0;color:#fff}
+.r3{background:#B87333;color:#fff}
+.rn{background:var(--off);color:var(--muted);border:1px solid var(--border)}
+.reader-name{flex:1;font-weight:700;font-size:14px;color:var(--text)}
+.reader-punches{font-size:13px;color:var(--muted);font-weight:600}
+.reader-cards{font-size:12px;font-weight:700;color:var(--navy);background:var(--blue-light);padding:3px 9px;border-radius:10px;border:1px solid rgba(18,78,150,.15)}
+.lb-note{font-size:13px;color:var(--muted);text-align:center;padding:0 16px;line-height:1.4}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:var(--rl);max-width:440px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+.modal-hdr{padding:18px 18px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-size:16px;font-weight:700;color:var(--navy)}
+.modal-x{background:none;border:none;font-size:24px;font-weight:700;color:var(--muted);cursor:pointer;line-height:1;padding:4px}
+.modal-x:hover{color:var(--text)}
+.modal-body{padding:18px}
+.modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;background:var(--off)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(8px);background:#1B5E20;color:#fff;font-size:14px;font-weight:700;padding:10px 20px;border-radius:var(--r);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;z-index:2000;box-shadow:var(--shadow-lg)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.page.active{animation:fadeIn .2s ease}
+@media(max-width:480px){
+  .enter-btn{width:100%;justify-content:center}
+  .basket-ft{flex-direction:column;align-items:stretch}
+  .prize-hdr{flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <!-- ── AUTH PAGE ── -->
+  <div id="page-auth" class="page active">
+    <div class="hdr" style="border-radius:0">
+      <div class="hdr-badge">🇺🇸 Summer Challenge</div>
+      <h1>Summer Smackdown</h1>
+      <div class="hdr-sub">Seward Memorial Library vs. York — Adult Reading Challenge</div>
+      <div class="hdr-vs"><span class="hdr-team">📚 Seward</span><span class="hdr-vs-badge">VS</span><span class="hdr-team">📖 York</span></div>
+    </div>
+    <div class="auth-wrap">
+      <div class="auth-card" id="card-login">
+        <h2 class="auth-title">Welcome back!</h2>
+        <p class="auth-sub">Sign in with your library card to track your reading.</p>
+        <div class="err" id="login-err" style="display:none"></div>
+        <form id="login-form">
+          <div class="fg"><label class="lbl">Library Card Number</label><input class="inp" id="login-card" type="text" inputmode="numeric" placeholder="1–5 digit card number" maxlength="5" autocomplete="username" required/></div>
+          <div class="fg"><label class="lbl">Password</label><input class="inp" id="login-pass" type="password" placeholder="Your password" autocomplete="current-password" required/></div>
+          <button class="btn btn-navy btn-full" type="submit">Sign In</button>
+        </form>
+        <div class="auth-sw">New to the Smackdown? <a id="sw-to-reg" href="#">Register here</a></div>
+      </div>
+      <div class="auth-card" id="card-reg" style="display:none">
+        <h2 class="auth-title">Join the Smackdown!</h2>
+        <p class="auth-sub">Create your reading account with your Seward library card.</p>
+        <div class="err" id="reg-err" style="display:none"></div>
+        <div class="ok" id="reg-ok" style="display:none"></div>
+        <form id="reg-form">
+          <div class="fg"><label class="lbl">First Name</label><input class="inp" id="reg-name" type="text" placeholder="Your first name" autocomplete="given-name" required/></div>
+          <div class="fg"><label class="lbl">Library Card Number</label><input class="inp" id="reg-card" type="text" inputmode="numeric" placeholder="1–5 digit card number" maxlength="5" autocomplete="username" required/></div>
+          <div class="fg"><label class="lbl">Choose a Password</label><input class="inp" id="reg-pass" type="password" placeholder="Min 6 characters" autocomplete="new-password" required/></div>
+          <div class="fg"><label class="lbl">Confirm Password</label><input class="inp" id="reg-pass2" type="password" placeholder="Confirm password" autocomplete="new-password" required/></div>
+          <button class="btn btn-navy btn-full" type="submit">🌟 Create Account</button>
+        </form>
+        <div class="auth-sw">Already have an account? <a id="sw-to-login" href="#">Sign in</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN APP (post-auth) ── -->
+  <div id="main" style="display:none">
+    <div class="hdr">
+      <button class="hdr-signout" id="btn-logout">Sign out</button>
+      <div class="hdr-badge">🇺🇸 Summer Smackdown</div>
+      <h1 id="hdr-greeting">Hi, Reader!</h1>
+      <div class="hdr-sub">Seward Memorial Library — Adult Challenge</div>
+      <div class="hdr-vs"><span class="hdr-team">📚 Seward</span><span class="hdr-vs-badge">VS</span><span class="hdr-team">📖 York</span></div>
+      <div class="prog-wrap">
+        <div class="prog-labels"><span>Your progress</span><span id="prog-right">0 punches</span></div>
+        <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-page="dash" id="nav-dash"><span class="nav-icon">🏅</span><span>Dashboard</span></button>
+      <button class="nav-btn" data-page="log" id="nav-log"><span class="nav-icon">📖</span><span>Log Book</span></button>
+      <button class="nav-btn" data-page="prizes" id="nav-prizes"><span class="nav-icon">🎁</span><span>Prizes</span></button>
+      <button class="nav-btn" data-page="catalog" id="nav-catalog"><span class="nav-icon">🔍</span><span>Catalog</span></button>
+      <button class="nav-btn" data-page="lb" id="nav-lb"><span class="nav-icon">🏆</span><span>Scores</span></button>
+    </nav>
+
+    <div id="page-dash" class="page active"><div class="dash">
+      <div class="stats" id="stats-row"></div>
+      <div id="punch-section"></div>
+    </div></div>
+
+    <div id="page-log" class="page" style="display:none"><div class="log-wrap">
+      <div class="dp-notice">
+        <strong>⭐ Double Punch Rule!</strong> If the book title includes <strong>RED</strong>, <strong>WHITE</strong>, or <strong>BLUE</strong> — earn <strong>2 punches</strong>!
+        <div class="flag-words"><span class="fw fw-r">RED</span><span class="fw fw-w">WHITE</span><span class="fw fw-b">BLUE</span></div>
+      </div>
+      <div class="log-form">
+        <div class="log-form-title">📖 Log a Completed Book</div>
+        <div class="err" id="log-err" style="display:none"></div>
+        <div class="ok" id="log-ok" style="display:none"></div>
+        <div class="fg"><label class="lbl">Book Title</label><input class="inp" id="log-title" type="text" placeholder="Enter the book title"/></div>
+        <div class="fg"><label class="lbl">Author <span style="font-weight:500;text-transform:none">(optional)</span></label><input class="inp" id="log-author" type="text" placeholder="Author's name"/></div>
+        <div class="fg"><label class="lbl">Where did you get it?</label>
+          <div class="radio-row"><div class="ro sel" id="src-lib">🏛️ Library</div><div class="ro" id="src-libby">📱 Libby</div></div>
+        </div>
+        <div class="fg">
+          <label class="lbl">Does the title include RED, WHITE, or BLUE?</label>
+          <div class="radio-row"><div class="ro sel" id="dp-no">No — 1 punch</div><div class="ro" id="dp-yes">⭐ Yes — 2 punches</div></div>
+          <div class="dp-indicator" id="dp-ind">⭐ <span>This book earns <strong>2 punches!</strong></span></div>
+        </div>
+        <button class="btn btn-gold btn-full" id="btn-submit-book">✅ Add to My Reading Log</button>
+      </div>
+      <div class="sec-title" style="font-size:15px;margin-bottom:8px">My Books Log</div>
+      <div id="books-list"></div>
+    </div></div>
+
+    <div id="page-prizes" class="page" style="display:none"><div class="prize-wrap">
+      <div class="prize-hdr">
+        <div class="prize-hdr-left"><h2>🎁 Prize Baskets</h2><p>Complete a punch card (5 punches) to earn one entry. Pick any basket!</p></div>
+        <div class="entries-badge">🎟️ Cards: <strong id="pb-cards">0</strong> &nbsp;·&nbsp; Left: <strong id="pb-left">0</strong></div>
+      </div>
+      <div id="entries-tally" class="entries-tally" style="display:none"></div>
+      <div id="no-entries-msg" class="no-entries-msg" style="display:none"></div>
+      <div class="baskets" id="baskets-list"></div>
+    </div></div>
+
+    <div id="page-catalog" class="page" style="display:none"><div class="cat-wrap">
+      <div class="cat-tip">🔗 Searching Seward Memorial Library's Apollo catalog — books found can be logged directly to your punch card!</div>
+      <div class="cat-hd">
+        <div class="cat-row">
+          <input class="cat-inp" id="cat-q" type="text" placeholder="Search titles, authors, keywords…"/>
+          <select class="cat-sel" id="cat-type"><option value="keyword">All Fields</option><option value="title">Title</option><option value="author">Author</option><option value="subject">Subject</option></select>
+        </div>
+        <div class="cat-btns">
+          <button class="btn btn-navy btn-full btn-sm" style="flex:1;justify-content:center;padding:9px" id="btn-search-cat">🔍 Search Catalog</button>
+          <button class="btn btn-outline btn-sm" onclick="window.open('https://seward.biblionix.com/catalog/','_blank')">Full Catalog ↗</button>
+        </div>
+        <div class="cat-note">Results pull from Open Library. Use "Seward Catalog" links to check local availability.</div>
+      </div>
+      <div id="catalog-results"></div>
+    </div></div>
+
+    <div id="page-lb" class="page" style="display:none"><div class="lb-wrap">
+      <div class="alert" id="lb-alert" style="display:none"></div>
+      <div class="team-banner">
+        <div class="team t-seward"><div class="team-name">📚 Seward</div><div class="team-score" id="lb-seward">0</div><div class="team-readers" id="lb-seward-r">0 readers</div></div>
+        <div class="vs-div">VS</div>
+        <div class="team t-york"><div class="team-name">📖 York</div><div class="team-score" id="lb-york">0</div><div class="team-readers" id="lb-york-r">0 readers</div></div>
+      </div>
+      <div class="score-bar"><div class="sb-seward" id="sb-seward" style="width:50%"></div><div class="sb-york"></div></div>
+      <div class="lb-updated" id="lb-updated"></div>
+
+      <div class="top-readers">
+        <div class="tr-hdr">🏆 Top Seward Readers</div>
+        <div id="top-readers-list"></div>
+      </div>
+
+      <div class="top-readers">
+        <div class="tr-hdr">📍 My Leaderboard Ranking</div>
+        <div id="relative-readers-list"></div>
+      </div>
+
+      <p class="lb-note">York score updated by Seward library staff from ReaderZone program.</p>
+    </div></div>
+  </div><!-- /#main -->
+</div><!-- /#app -->
+
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-hdr"><span class="modal-title" id="modal-title"></span><button class="modal-x" id="btn-close-modal">×</button></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp }                                       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword,
+         signInWithEmailAndPassword, signOut,
+         onAuthStateChanged }                                  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc,
+         deleteDoc, addDoc, getDocs, collection, query,
+         where, serverTimestamp, increment, limit }            from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// ── Firebase config ──────────────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyC00nVYhJNlYOTo0s4CCFWpfxLKEfUiirk",
+  authDomain:        "summer-tracker-5c05d.firebaseapp.com",
+  projectId:         "summer-tracker-5c05d",
+  storageBucket:     "summer-tracker-5c05d.firebasestorage.app",
+  messagingSenderId: "144831474075",
+  appId:             "1:144831474075:web:8d1a2bdd7971199334193e",
+  measurementId:     "G-T7Q2599KJV"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── App state ────────────────────────────────────────────────
+let currentUser        = null;
+let currentLibraryCard = null;
+let currentPatronData  = null;
+let myBooks            = [];
+let myEntries          = [];
+let sourceIsLibrary    = true;
+let flagDoublePunch    = false;
+let openBasket         = null;
+let pendingBasketId    = null;
+let yScore             = { books: 0, readers: 0 };
+let leaderboardGroups  = [];
+
+// ── Prize basket definitions ─────────────────────────────────
+const BASKETS = [
+  { id:1, name:'Adult Prize Basket #1', icon:'🛍️', bg:'#EEF4FC', fg:'#124E96', prizes:[
+    {n:"Adventure Golf Lincoln",v:"Two admission passes"},{n:"Godfather's Pizza",v:"$15 gift certificate"},
+    {n:"Sparetime Lounge / Seward Bowl",v:"$15 in gift cards"},{n:"Seward Car Wash",v:"$15 in tokens"},
+    {n:"Pac & Save",v:"$25 gift card"},{n:"Main Street Market – Milford",v:"$10 gift card"},
+    {n:"What's the Scoop",v:"One free single scoop"},{n:"Seward County Independent",v:"One free tumbler"},
+  ]},
+  { id:2, name:'Adult Prize Basket #2', icon:'✨', bg:'#FDF1F1', fg:'#A31D1D', prizes:[
+    {n:"VP Nails",v:"$25 gift certificate"},{n:"Et Cetera",v:"$15 gift certificate"},
+    {n:"Toast Restaurant – Fallbrook",v:"$20 gift card"},{n:"Desert Glow",v:"3 sessions and bronzer"},
+    {n:"LaundryLand",v:"$15 gift card"},{n:"What's the Scoop",v:"One free single scoop"},
+    {n:"Friends of Seward Library",v:"Bag of Baker's Chocolates"},
+  ]},
+  { id:3, name:'Adult Prize Basket #3', icon:'🏆', bg:'#FCF7EB', fg:'#854F0B', prizes:[
+    {n:"Adventure Golf Lincoln",v:"Two admission passes"},{n:"Godfather's Pizza",v:"$15 gift certificate"},
+    {n:"Sparetime Lounge / Seward Bowl",v:"$15 in gift cards"},{n:"Fast Mart",v:"$10 gift card"},
+    {n:"Pac & Save",v:"$25 gift card"},{n:"Main Street Market – Milford",v:"$10 gift card"},
+    {n:"What's the Scoop",v:"One free single scoop"},{n:"Sweet Tea Printing",v:"One free tumbler"},
+  ]},
+  { id:4, name:'Adult Prize Basket #4', icon:'📍', bg:'#EAF3DE', fg:'#3B6D11', prizes:[
+    {n:"Vala's Pumpkin Patch",v:"Two gate admission passes"},{n:"Lost in Fun",v:"Six admission passes"},
+    {n:"Kiewit Luminarium – Omaha",v:"Two admission tickets"},{n:"Valentino's",v:"$25 gift certificate"},
+    {n:"Et Cetera",v:"$15 gift certificate"},{n:"What's the Scoop",v:"One free single scoop"},
+  ]},
+  { id:5, name:'Adult Prize Basket #5', icon:'🍽️', bg:'#FAECE7', fg:'#993C1D', prizes:[
+    {n:"14Tin",v:"$25 gift certificate"},{n:"Et Cetera",v:"$15 gift certificate"},
+    {n:"Chat & Frances",v:"$15 gift certificate"},{n:"La Cocina",v:"$20 gift certificate"},
+    {n:"Dragon Palace",v:"$20 gift certificate"},{n:"Main Street Market – Milford",v:"$10 gift card"},
+    {n:"What's the Scoop",v:"One free single scoop"},
+  ]},
+];
+
+// ── Utility helpers ──────────────────────────────────────────
+function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function normalizeCard(card){ const raw = String(card ?? '').trim(); return /^[0-9]{1,5}$/.test(raw) ? String(parseInt(raw, 10)) : null; }
+function cardToEmail(card){ const c = normalizeCard(card); return c ? `patron.${c}@sewardlibrary.org` : ''; }
+function cardFromEmail(email){ const m = String(email ?? '').match(/patron\.(\d{1,5})@/i); return m ? normalizeCard(m[1]) : null; }
+function hasFlag(t){ return /\b(red|white|blue)\b/i.test(String(t ?? '')); }
+function flagColor(t){ if(/\bred\b/i.test(String(t ?? ''))) return 'red'; if(/\bwhite\b/i.test(String(t ?? ''))) return 'white'; if(/\bblue\b/i.test(String(t ?? ''))) return 'blue'; return null; }
+function totalPunches(books){ return (books || []).reduce((a, b) => a + (b.is_double_punch ? 2 : 1), 0); }
+function completedCards(books){ return Math.floor(totalPunches(books) / 5); }
+function entriesLeft(){ return Math.max(0, completedCards(myBooks) - (myEntries?.length || 0)); }
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function showEl(id){ const el = document.getElementById(id); if(el) el.style.display = ''; }
+function hideEl(id){ const el = document.getElementById(id); if(el) el.style.display = 'none'; }
+function showErr(id, msg){ const el = document.getElementById(id); if(el){ el.textContent = msg; el.style.display = ''; } }
+function hideErr(id){ hideEl(id); }
+
+// ── Page navigation (only works when user is logged in) ──────
+function showPage(name){
+  const pages = ['dash','log','prizes','catalog','lb'];
+  pages.forEach(page => {
+    const el  = document.getElementById(`page-${page}`);
+    const nav = document.getElementById(`nav-${page}`);
+    if(el)  el.style.display  = page === name ? 'block' : 'none';
+    if(nav) nav.classList.toggle('active', page === name);
+    if(el && page === name) el.classList.add('active');
+    else if(el) el.classList.remove('active');
+  });
+  if(name === 'dash')    renderDashboard();
+  if(name === 'log')     renderLog();
+  if(name === 'prizes')  renderPrizes();
+  if(name === 'catalog') renderCatalog();
+  if(name === 'lb')      renderLeaderboard();
+}
+
+function setAuthCard(mode){
+  document.getElementById('card-login').style.display = mode === 'login' ? 'block' : 'none';
+  document.getElementById('card-reg').style.display   = mode === 'reg'   ? 'block' : 'none';
+}
+
+function setSource(v){
+  sourceIsLibrary = v === 'library';
+  document.getElementById('src-lib').classList.toggle('sel',  sourceIsLibrary);
+  document.getElementById('src-libby').classList.toggle('sel', !sourceIsLibrary);
+}
+
+function setDP(v){
+  flagDoublePunch = !!v;
+  document.getElementById('dp-no').classList.toggle('sel',  !flagDoublePunch);
+  document.getElementById('dp-yes').classList.toggle('sel',  flagDoublePunch);
+  document.getElementById('dp-ind').classList.toggle('show',  flagDoublePunch);
+}
+
+// ── Auth: Login ──────────────────────────────────────────────
+async function processLogin(){
+  hideErr('login-err');
+  const card = normalizeCard(document.getElementById('login-card').value);
+  const pass = document.getElementById('login-pass').value;
+  if(!card){ showErr('login-err', 'Please enter a valid library card number (1–5 digits).'); return; }
+  if(!pass){ showErr('login-err', 'Please enter your password.'); return; }
+  const email = cardToEmail(card);
+  const btn = document.querySelector('#login-form button[type="submit"]');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  try{
+    await signInWithEmailAndPassword(auth, email, pass);
+    // onAuthStateChanged handles the rest
+  }catch(err){
+    const msg = (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found')
+      ? 'Incorrect card number or password. Please try again.'
+      : 'Sign-in failed. Please try again.';
+    showErr('login-err', msg);
+  }finally{
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+}
+
+// ── Auth: Register ───────────────────────────────────────────
+async function processRegister(){
+  hideErr('reg-err');
+  hideEl('reg-ok');
+  const name  = document.getElementById('reg-name').value.trim();
+  const card  = normalizeCard(document.getElementById('reg-card').value);
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  if(!name){ showErr('reg-err', 'Please enter your first name.'); return; }
+  if(!card){ showErr('reg-err', 'Please enter a valid library card number (1–5 digits).'); return; }
+  if(pass.length < 6){ showErr('reg-err', 'Password must be at least 6 characters.'); return; }
+  if(pass !== pass2){ showErr('reg-err', 'Passwords do not match.'); return; }
+  const email = cardToEmail(card);
+  const btn = document.querySelector('#reg-form button[type="submit"]');
+  btn.disabled = true; btn.textContent = 'Creating account…';
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    // Create patron document
+    await setDoc(doc(db, 'patrons', card), {
+      library_card:        card,
+      display_name:        name,
+      auth_uid:            cred.user.uid,
+      online_account:      true,
+      offline_participant: false,
+      total_books_read:    0,
+      created_at:          serverTimestamp(),
+      updated_at:          serverTimestamp()
+    }, { merge: true });
+    // onAuthStateChanged will fire and load the main app
+  }catch(err){
+    const msg = err.code === 'auth/email-already-in-use'
+      ? 'That library card already has an account. Try signing in instead.'
+      : 'Registration failed: ' + (err.message || err.code);
+    showErr('reg-err', msg);
+    btn.disabled = false; btn.textContent = '🌟 Create Account';
+  }
+}
+
+// ── Load main app after sign-in ──────────────────────────────
+async function loadMain(user){
+  currentUser = user;
+
+  // Resolve library card from email
+  const emailCard = cardFromEmail(user.email);
+  let card = emailCard;
+
+  if(card){
+    // Try direct patron doc
+    const snap = await getDoc(doc(db, 'patrons', card));
+    if(snap.exists()){
+      currentPatronData  = snap.data() || {};
+      currentLibraryCard = card;
+      // Back-fill auth_uid if missing
+      if(!currentPatronData.auth_uid){
+        await setDoc(doc(db, 'patrons', card), { auth_uid: user.uid, updated_at: serverTimestamp() }, { merge: true }).catch(() => {});
+      }
+    } else {
+      // Patron doc may not exist yet (just registered — race condition)
+      currentPatronData  = { library_card: card, display_name: card };
+      currentLibraryCard = card;
+    }
+  } else {
+    // Fall back: query by auth_uid
+    const q    = query(collection(db, 'patrons'), where('auth_uid', '==', user.uid), limit(1));
+    const snap = await getDocs(q);
+    if(!snap.empty){
+      const d    = snap.docs[0];
+      currentPatronData  = d.data() || {};
+      currentLibraryCard = normalizeCard(currentPatronData.library_card) || normalizeCard(d.id) || d.id;
+    } else {
+      // No patron record found — sign out and show error
+      await signOut(auth);
+      showErr('login-err', 'No patron record found for this account. Please contact the library.');
+      return;
+    }
+  }
+
+  // Load all patron data in parallel
+  await Promise.all([refreshPatronData(), refreshBooks(), refreshEntries(), refreshLeaderboard()]);
+
+  // Show app
+  const greeting = currentPatronData?.display_name
+    ? `Hi, ${currentPatronData.display_name}!`
+    : 'Hi, Reader!';
+  document.getElementById('hdr-greeting').textContent = greeting;
+  document.getElementById('page-auth').style.display = 'none';
+  document.getElementById('main').style.display      = 'block';
+  showPage('dash');
+}
+
+// ── Clear state on sign-out ──────────────────────────────────
+function clearState(){
+  currentUser        = null;
+  currentLibraryCard = null;
+  currentPatronData  = null;
+  myBooks            = [];
+  myEntries          = [];
+  leaderboardGroups  = [];
+  openBasket         = null;
+  pendingBasketId    = null;
+  document.getElementById('main').style.display      = 'none';
+  document.getElementById('page-auth').style.display = 'block';
+  setAuthCard('login');
+  hideErr('login-err');
+  hideErr('reg-err');
+  hideEl('reg-ok');
+}
+
+// ── Firestore data refresh ───────────────────────────────────
+async function refreshPatronData(){
+  if(!currentLibraryCard) return;
+  const snap = await getDoc(doc(db, 'patrons', currentLibraryCard));
+  if(snap.exists()) currentPatronData = snap.data() || {};
+}
+
+async function refreshBooks(){
+  if(!currentLibraryCard) return;
+  const all  = [];
+  const seen = new Set();
+
+  // Primary path: subcollection
+  const subSnap = await getDocs(collection(db, 'patrons', currentLibraryCard, 'books')).catch(() => null);
+  subSnap?.forEach(d => {
+    if(seen.has(d.id)) return;
+    seen.add(d.id);
+    all.push({ id: d.id, pathType: 'sub', ...d.data() });
+  });
+
+  // Legacy path: top-level /books collection
+  const legacyQ    = query(collection(db, 'books'), where('patron_id', '==', currentLibraryCard));
+  const legacySnap = await getDocs(legacyQ).catch(() => null);
+  legacySnap?.forEach(d => {
+    if(seen.has(d.id)) return;
+    seen.add(d.id);
+    all.push({ id: d.id, pathType: 'legacy', ...d.data() });
+  });
+
+  myBooks = all.sort((a, b) => {
+    const at = a.logged_at?.seconds || 0;
+    const bt = b.logged_at?.seconds || 0;
+    return at - bt;
+  });
+}
+
+async function refreshEntries(){
+  if(!currentLibraryCard) return;
+  const all  = [];
+  const seen = new Set();
+
+  const subSnap = await getDocs(collection(db, 'patrons', currentLibraryCard, 'basket_entries')).catch(() => null);
+  subSnap?.forEach(d => {
+    if(seen.has(d.id)) return;
+    seen.add(d.id);
+    all.push({ id: d.id, pathType: 'sub', ...d.data() });
+  });
+
+  const legacyQ    = query(collection(db, 'basket_entries'), where('patron_id', '==', currentLibraryCard));
+  const legacySnap = await getDocs(legacyQ).catch(() => null);
+  legacySnap?.forEach(d => {
+    if(seen.has(d.id)) return;
+    seen.add(d.id);
+    all.push({ id: d.id, pathType: 'legacy', ...d.data() });
+  });
+
+  myEntries = all;
+}
+
+function bookRef(rec){
+  if(rec.pathType === 'legacy') return doc(db, 'books', rec.id);
+  return doc(db, 'patrons', currentLibraryCard, 'books', rec.id);
+}
+
+// ── Log a book ───────────────────────────────────────────────
+async function logBook(){
+  hideEl('log-err'); hideEl('log-ok');
+  const title  = document.getElementById('log-title').value.trim();
+  const author = document.getElementById('log-author').value.trim();
+  if(!title){ showErr('log-err', 'Please enter a book title.'); return; }
+  if(!currentLibraryCard){ showErr('log-err', 'Not signed in. Please refresh.'); return; }
+  const isDP   = flagDoublePunch || hasFlag(title);
+  const source = sourceIsLibrary ? 'Library' : 'Libby';
+  const btn    = document.getElementById('btn-submit-book');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try{
+    await addDoc(collection(db, 'patrons', currentLibraryCard, 'books'), {
+      patron_id:        currentLibraryCard,
+      title,
+      author:           author || null,
+      source,
+      is_double_punch:  isDP,
+      logged_by_staff:  false,
+      logged_at:        serverTimestamp()
+    });
+    await updateDoc(doc(db, 'patrons', currentLibraryCard), {
+      total_books_read: increment(isDP ? 2 : 1),
+      updated_at:       serverTimestamp()
+    }).catch(() => {});
+    await Promise.all([refreshBooks(), refreshPatronData(), refreshLeaderboard()]);
+    document.getElementById('log-title').value  = '';
+    document.getElementById('log-author').value = '';
+    setSource('library'); setDP(false);
+    const el = document.getElementById('log-ok');
+    el.textContent = `✅ "${title}" logged! +${isDP ? 2 : 1} punch${isDP ? 'es' : ''}.`;
+    el.style.display = '';
+    setTimeout(() => hideEl('log-ok'), 3000);
+    renderBooksList();
+    renderDashboard();
+    renderLeaderboardPanels();
+  }catch(err){
+    console.error(err);
+    showErr('log-err', 'Could not save book. Please try again.');
+  }finally{
+    btn.disabled = false; btn.textContent = '✅ Add to My Reading Log';
+  }
+}
+
+// ── Dashboard ────────────────────────────────────────────────
+function renderDashboard(){
+  const total = totalPunches(myBooks);
+  const cards = completedCards(myBooks);
+  const cur   = total % 5;
+  const maxBar = Math.max((cards + 1) * 5, 5);
+  document.getElementById('prog-fill').style.width  = Math.round((total / maxBar) * 100) + '%';
+  document.getElementById('prog-right').textContent = `${total} punch${total === 1 ? '' : 'es'}`;
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat"><div class="stat-n">${myBooks.length}</div><div class="stat-l">Books</div></div>
+    <div class="stat"><div class="stat-n">${total}</div><div class="stat-l">Punches</div></div>
+    <div class="stat"><div class="stat-n">${cards}</div><div class="stat-l">Cards Done</div></div>`;
+
+  let html = '<div class="sec-title">Punch Cards <span>5 punches per card · unlimited cards</span></div><div class="punch-cards">';
+  for(let c = 0; c <= cards; c++){
+    const isDone    = c < cards;
+    const filled    = isDone ? 5 : cur;
+    const cardBooks = getBooksForCard(c);
+    let punchHtml   = '<div class="punches">';
+    for(let i = 0; i < 5; i++){
+      if(i < filled){
+        const b   = getBookAtCardPunch(c, i);
+        const cls = b?.is_double_punch ? 'filled-d' : 'filled';
+        punchHtml += `<div class="punch ${cls}">${b?.is_double_punch ? '⭐' : '★'}${b?.is_double_punch ? '<span class="punch-x2">×2</span>' : ''}</div>`;
+      } else {
+        punchHtml += `<div class="punch"><span class="punch-n">${i+1}</span></div>`;
+      }
+    }
+    punchHtml += '</div>';
+    let booksHtml = '';
+    if(cardBooks.length){
+      booksHtml = '<div class="pcard-books">';
+      cardBooks.forEach(b => {
+        const fc    = flagColor(b.title);
+        const badge = fc === 'red'   ? '<span class="badge-r">RED</span>'
+                    : fc === 'white' ? '<span class="badge-r">WHITE</span>'
+                    : fc === 'blue'  ? '<span class="badge-b">BLUE</span>' : '';
+        booksHtml += `<div class="pb-row">📚 <span class="pb-title">${esc(b.title)}</span> ${badge} <span style="color:var(--light);font-size:12px;margin-left:auto;font-weight:600">${b.source === 'Libby' ? 'Libby' : 'Library'}</span></div>`;
+      });
+      booksHtml += '</div>';
+    }
+    html += `<div class="pcard${isDone ? ' done' : ''}">
+      <div class="pcard-hd"><span class="pcard-num">Card #${c+1}</span><span class="pcard-status ${isDone ? 's-done' : 's-active'}">${isDone ? '✅ Complete' : 'In Progress'}</span></div>
+      ${punchHtml}${booksHtml}
+    </div>`;
+  }
+  html += '</div><p style="text-align:center;font-size:13px;font-weight:600;color:var(--muted);padding-bottom:8px">📖 Log more books to keep punching!</p>';
+  document.getElementById('punch-section').innerHTML = html;
+}
+
+function getBooksForCard(cardIdx){
+  let punches = 0;
+  const result = [];
+  for(const b of myBooks){
+    const p     = b.is_double_punch ? 2 : 1;
+    const start = cardIdx * 5;
+    const end   = start + 5;
+    if(punches < end && punches + p > start) result.push(b);
+    punches += p;
+    if(punches >= end) break;
+  }
+  return result;
+}
+
+function getBookAtCardPunch(cardIdx, punchIdx){
+  let punches = 0;
+  const target = cardIdx * 5 + punchIdx;
+  for(const b of myBooks){
+    const p = b.is_double_punch ? 2 : 1;
+    if(punches <= target && punches + p > target) return b;
+    punches += p;
+  }
+  return null;
+}
+
+// ── Log page ─────────────────────────────────────────────────
+function renderLog(){
+  setSource('library'); setDP(false);
+  document.getElementById('log-title').value  = '';
+  document.getElementById('log-author').value = '';
+  hideEl('log-err'); hideEl('log-ok');
+  renderBooksList();
+}
+
+function renderBooksList(){
+  const el = document.getElementById('books-list');
+  if(!myBooks.length){
+    el.innerHTML = '<p style="text-align:center;color:var(--muted);padding:20px;font-size:14px;font-weight:600">No books logged yet. Start reading! 📚</p>';
+    return;
+  }
+  let html = '';
+  [...myBooks].reverse().forEach(b => {
+    const fc    = flagColor(b.title);
+    const badge = fc === 'red'   ? '<span class="badge-r">RED ×2</span>'
+                : fc === 'white' ? '<span class="badge-r">WHITE ×2</span>'
+                : fc === 'blue'  ? '<span class="badge-b">BLUE ×2</span>'
+                : b.is_double_punch ? '<span class="badge-b">⭐ ×2</span>' : '';
+    const dt   = b.logged_at?.seconds ? new Date(b.logged_at.seconds * 1000) : null;
+    const dStr = dt ? dt.toLocaleDateString('en-US', { month:'short', day:'numeric' }) : '';
+    html += `<div class="book-item">
+      <div class="bi-info">
+        <div class="bi-title">${esc(b.title)}</div>
+        <div class="bi-meta">${b.author ? esc(b.author) + ' · ' : ''}${b.source === 'Libby' ? '📱 Libby' : '🏛️ Library'}${dStr ? ' · ' + dStr : ''} ${badge}</div>
+      </div>
+      <button class="btn-rm" data-id="${b.id}" data-kind="${b.pathType}">✕</button>
+    </div>`;
+  });
+  el.innerHTML = html;
+  el.querySelectorAll('.btn-rm').forEach(btn => btn.addEventListener('click', async () => {
+    if(!confirm('Remove this book from your log?')) return;
+    const rec = myBooks.find(b => b.id === btn.getAttribute('data-id') && b.pathType === btn.getAttribute('data-kind'));
+    if(!rec) return;
+    try{
+      const punches = rec.is_double_punch ? 2 : 1;
+      await deleteDoc(bookRef(rec));
+      await updateDoc(doc(db, 'patrons', currentLibraryCard), {
+        total_books_read: increment(-punches),
+        updated_at:       serverTimestamp()
+      }).catch(() => {});
+      await Promise.all([refreshBooks(), refreshPatronData(), refreshLeaderboard()]);
+      renderBooksList(); renderDashboard(); renderLeaderboardPanels();
+      showToast('Book removed.');
+    }catch(err){ console.error(err); showToast('Failed to delete. Please try again.'); }
+  }));
+}
+
+// ── Prizes page ──────────────────────────────────────────────
+function renderPrizes(){
+  const cards = completedCards(myBooks);
+  const left  = entriesLeft();
+  document.getElementById('pb-cards').textContent = cards;
+  document.getElementById('pb-left').textContent  = left;
+  const usedMap   = {};
+  myEntries.forEach(e => { usedMap[e.basket_id] = (usedMap[e.basket_id] || 0) + 1; });
+  const totalUsed = Object.values(usedMap).reduce((a, b) => a + b, 0);
+
+  const tallyEl = document.getElementById('entries-tally');
+  if(totalUsed > 0){
+    tallyEl.style.display = 'flex';
+    tallyEl.innerHTML     = BASKETS.map(b => usedMap[b.id] ? `<div class="e-chip active">🎟️ Basket #${b.id}: ${usedMap[b.id]}</div>` : '').join('');
+  } else {
+    tallyEl.style.display = 'none';
+  }
+
+  const noEl = document.getElementById('no-entries-msg');
+  if(left === 0 && cards === 0){
+    noEl.style.display = 'block';
+    noEl.innerHTML     = 'Complete a <strong>punch card</strong> (5 punches) to earn a prize basket entry!';
+  } else if(left === 0){
+    noEl.style.display = 'block';
+    noEl.innerHTML     = `All ${cards} entr${cards === 1 ? 'y' : 'ies'} used! Complete another punch card to earn more.`;
+  } else {
+    noEl.style.display = 'none';
+  }
+
+  document.getElementById('baskets-list').innerHTML = BASKETS.map(b => renderBasket(b, left, usedMap)).join('');
+  document.getElementById('baskets-list').querySelectorAll('.basket-hd').forEach(hd => {
+    hd.addEventListener('click', () => {
+      const id = Number(hd.getAttribute('data-basketid'));
+      openBasket = openBasket === id ? null : id;
+      renderPrizes();
+    });
+  });
+  document.getElementById('baskets-list').querySelectorAll('.enter-btn').forEach(btn => {
+    btn.addEventListener('click', e => { e.stopPropagation(); openEntryModal(Number(btn.getAttribute('data-basketid'))); });
+  });
+}
+
+function renderBasket(b, left, usedMap){
+  const count  = usedMap[b.id] || 0;
+  const isOpen = openBasket === b.id;
+  const prizes = b.prizes.map(p => `<div class="prize-row"><span class="pr-check">✓</span><span class="pr-name">${esc(p.n)}</span><span class="pr-val">${esc(p.v)}</span></div>`).join('');
+  return `<div class="basket${isOpen ? ' open' : ''}${count > 0 ? ' has-entry' : ''}" id="bk-${b.id}">
+    <div class="basket-hd" data-basketid="${b.id}" role="button">
+      <div class="b-icon" style="background:${b.bg};color:${b.fg}">${b.icon}</div>
+      <div class="b-meta"><div class="b-name">${esc(b.name)}</div><div class="b-sub">${b.prizes.length} prizes included</div></div>
+      <div class="b-hd-r">${count > 0 ? `<span class="e-pill">🎟️ ${count}</span>` : ''}<span class="chevron">▾</span></div>
+    </div>
+    <div class="basket-body">
+      <div class="prize-list">${prizes}</div>
+      <div class="basket-ft">
+        <span class="basket-ft-l">${count > 0 ? `<strong>${count}</strong> entr${count === 1 ? 'y' : 'ies'} submitted` : 'No entries yet'}</span>
+        <button class="enter-btn ${count > 0 ? 'entered' : ''}" data-basketid="${b.id}" ${left <= 0 ? 'disabled' : ''}>${count > 0 ? '🎟️ Enter again' : '🎟️ Enter to win'}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function openEntryModal(id){
+  pendingBasketId = id;
+  const b    = BASKETS.find(x => x.id === id);
+  const left = entriesLeft();
+  openModal(
+    'Confirm Entry',
+    `<p style="margin-bottom:14px;font-size:14px;">Use one entry for:</p>
+     <div style="background:var(--off);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 14px;margin-bottom:14px;font-weight:700;font-size:15px;color:var(--navy);">${b.icon} ${esc(b.name)}</div>
+     <p style="font-size:13px;color:var(--muted);font-weight:600;">You will have ${Math.max(0, left - 1)} entr${Math.max(0, left - 1) === 1 ? 'y' : 'ies'} remaining after this.</p>`,
+    `<button class="btn btn-outline" id="btn-modal-cancel">Cancel</button><button class="btn btn-gold" id="btn-modal-confirm">✅ Confirm entry</button>`
+  );
+  document.getElementById('btn-modal-cancel').onclick  = closeModal;
+  document.getElementById('btn-modal-confirm').onclick = confirmEntry;
+}
+
+async function confirmEntry(){
+  if(!pendingBasketId) return;
+  if(entriesLeft() <= 0){ closeModal(); showToast('No entries available.'); return; }
+  try{
+    await addDoc(collection(db, 'patrons', currentLibraryCard, 'basket_entries'), {
+      basket_id:  pendingBasketId,
+      patron_id:  currentLibraryCard,
+      entered_at: serverTimestamp()
+    });
+    await refreshEntries();
+    const id = pendingBasketId;
+    closeModal();
+    openBasket = id;
+    renderPrizes();
+    showToast('Entry added! 🎟️');
+  }catch(err){
+    console.error(err);
+    closeModal();
+    showToast('Could not save entry. Please try again.');
+  }
+}
+
+// ── Catalog page ─────────────────────────────────────────────
+function renderCatalog(){
+  // Nothing to pre-populate; search is user-driven
+}
+
+async function executeCatalogSearch(){
+  const q         = document.getElementById('cat-q').value.trim();
+  const type      = document.getElementById('cat-type').value;
+  const container = document.getElementById('catalog-results'); // FIX: was 'search-results'
+  if(!q){ container.innerHTML = '<div class="no-res">Enter a title, author, or keyword to search.</div>'; return; }
+  container.innerHTML = '<div class="loading">Searching…</div>';
+  const enc = encodeURIComponent(q);
+  const url = type === 'author'  ? `https://openlibrary.org/search.json?author=${enc}&limit=8&fields=key,title,author_name,subject,cover_i,first_publish_year`
+            : type === 'subject' ? `https://openlibrary.org/search.json?subject=${enc}&limit=8&fields=key,title,author_name,subject,cover_i,first_publish_year`
+            : `https://openlibrary.org/search.json?q=${enc}&limit=8&fields=key,title,author_name,subject,cover_i,first_publish_year`;
+  try{
+    const data = await fetch(url).then(r => r.json());
+    const docs = (data.docs || []).slice(0, 6);
+    if(!docs.length){
+      container.innerHTML = `<div class="no-res">No results for "<strong>${esc(q)}</strong>".<br><br><a href="https://seward.biblionix.com/catalog/?query=${enc}&type=${type}" target="_blank">Search Seward catalog directly</a></div>`;
+      return;
+    }
+    let html = `<div style="font-size:13px;color:var(--muted);margin-bottom:10px;font-weight:600;">From Open Library — tap "Seward Catalog" to check local availability.</div>`;
+    docs.forEach(book => {
+      const title   = book.title || 'Unknown Title';
+      const authors = (book.author_name || []).join(', ') || 'Unknown Author';
+      const year    = book.first_publish_year || '';
+      const coverId = book.cover_i;
+      const coverHtml = coverId
+        ? `<img src="https://covers.openlibrary.org/b/id/${coverId}-M.jpg" class="sr-cover" alt="Cover" loading="lazy" onerror="this.style.display='none'">`
+        : `<div class="sr-cover">📖</div>`;
+      const fc     = flagColor(title);
+      const dpBadge = fc === 'red'   ? '<span class="sr-tag sr-tag-r">RED ×2</span>'
+                    : fc === 'white' ? '<span class="sr-tag sr-tag-r">WHITE ×2</span>'
+                    : fc === 'blue'  ? '<span class="sr-tag sr-tag-b">BLUE ×2</span>' : '';
+      const sewardUrl = `https://seward.biblionix.com/catalog/?query=${encodeURIComponent(title)}&type=title`;
+      html += `<div class="sr-item">${coverHtml}<div class="sr-info">
+        <div class="sr-title">${esc(title)}</div>
+        <div class="sr-author">${esc(authors)}${year ? ' · ' + year : ''}</div>
+        <div class="sr-tags">${dpBadge}</div>
+        <div class="sr-acts">
+          <a href="${sewardUrl}" target="_blank"><button class="btn btn-navy btn-sm">🏛️ Seward Catalog</button></a>
+          <button class="btn btn-gold btn-sm btn-quicklog" data-title="${esc(title)}" data-author="${esc(authors)}">✅ Log This Book</button>
+        </div>
+      </div></div>`;
+    });
+    html += `<div style="text-align:center;padding:10px 0"><a href="https://seward.biblionix.com/catalog/?query=${enc}&type=${type}" target="_blank" style="font-size:14px;font-weight:700;">More results in Seward's catalog ↗</a></div>`;
+    container.innerHTML = html;
+    container.querySelectorAll('.btn-quicklog').forEach(btn =>
+      btn.addEventListener('click', () => quickLog(btn.getAttribute('data-title'), btn.getAttribute('data-author')))
+    );
+  }catch(err){
+    console.error(err);
+    container.innerHTML = `<div class="no-res">Search unavailable. <a href="https://seward.biblionix.com/catalog/" target="_blank">Search catalog directly</a></div>`;
+  }
+}
+
+async function quickLog(title, author){
+  const isDP = hasFlag(title);
+  try{
+    await addDoc(collection(db, 'patrons', currentLibraryCard, 'books'), {
+      patron_id:       currentLibraryCard,
+      title,
+      author:          author || null,
+      source:          'Library',
+      catalog_search:  true,
+      is_double_punch: isDP,
+      logged_by_staff: false,
+      logged_at:       serverTimestamp()
+    });
+    await updateDoc(doc(db, 'patrons', currentLibraryCard), {
+      total_books_read: increment(isDP ? 2 : 1),
+      updated_at:       serverTimestamp()
+    }).catch(() => {});
+    await Promise.all([refreshBooks(), refreshPatronData(), refreshLeaderboard()]);
+    renderBooksList(); renderDashboard(); renderLeaderboardPanels();
+    showToast(`"${title}" logged! +${isDP ? 2 : 1} punch${isDP ? 'es' : ''}.`);
+  }catch(err){
+    console.error(err);
+    showToast('Could not log book. Please try again.');
+  }
+}
+
+// ── Leaderboard ──────────────────────────────────────────────
+async function loadYorkScores(){
+  const snap = await getDoc(doc(db, 'york_scores', 'current')).catch(() => null)
+            || await getDoc(doc(db, 'york_scores', '1')).catch(() => null);
+  if(snap?.exists()){
+    yScore = { books: Number(snap.data().books || 0), readers: Number(snap.data().readers || 0) };
+  }
+  document.getElementById('lb-york').textContent   = yScore.books;
+  document.getElementById('lb-york-r').textContent = `${yScore.readers} reader${yScore.readers === 1 ? '' : 's'}`;
+}
+
+async function refreshLeaderboard(){
+  const patronsSnap = await getDocs(collection(db, 'patrons')).catch(() => null);
+  if(!patronsSnap) return;
+  const patrons      = [];
+  let totalBooks     = 0;
+  let totalReaders   = 0;
+  patronsSnap.forEach(d => {
+    const data  = d.data() || {};
+    const count = Number(data.total_books_read || 0);
+    totalBooks  += count;
+    if(count > 0) totalReaders++;
+    patrons.push({ id: d.id, ...data, total_books_read: count });
+  });
+  leaderboardGroups = buildGroups(patrons);
+  await loadYorkScores();
+  document.getElementById('lb-seward').textContent   = totalBooks;
+  document.getElementById('lb-seward-r').textContent = `${totalReaders} reader${totalReaders === 1 ? '' : 's'}`;
+  const total = totalBooks + yScore.books;
+  document.getElementById('sb-seward').style.width   = total === 0 ? '50%' : `${(totalBooks / total) * 100}%`;
+  document.getElementById('lb-updated').textContent  = `Updated ${new Date().toLocaleString([], { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' })}`;
+  renderLeaderboardPanels();
+}
+
+function buildGroups(patrons){
+  const sorted = patrons.slice().sort((a, b) => Number(b.total_books_read || 0) - Number(a.total_books_read || 0));
+  const groups = [];
+  let rank     = 1;
+  for(let i = 0; i < sorted.length;){
+    const score   = Number(sorted[i].total_books_read || 0);
+    const members = [];
+    while(i < sorted.length && Number(sorted[i].total_books_read || 0) === score) members.push(sorted[i++]);
+    groups.push({ rank, score, members });
+    rank += members.length;
+  }
+  return groups.filter(g => Number(g.score || 0) > 0);
+}
+
+function currentGroupIndex(){
+  return leaderboardGroups.findIndex(g =>
+    g.members.some(m => String(m.library_card) === String(currentLibraryCard) || String(m.auth_uid) === String(currentUser?.uid))
+  );
+}
+
+function topFiveGroups(){ return leaderboardGroups.slice(0, 5); }
+
+function myWindowGroups(){
+  const idx   = currentGroupIndex();
+  if(idx < 0) return leaderboardGroups.slice(0, 5);
+  const start = Math.max(0, idx - 2);
+  const end   = Math.min(leaderboardGroups.length, start + 5);
+  return leaderboardGroups.slice(Math.max(0, end - 5), end);
+}
+
+function groupRowHtml(group){
+  const rank  = group.rank;
+  const me    = group.members.some(m => String(m.library_card) === String(currentLibraryCard) || String(m.auth_uid) === String(currentUser?.uid));
+  const isTie = group.members.length > 1;
+  const rankClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : 'rn';
+  const title = isTie
+    ? (me ? `You + ${group.members.length - 1} Reader${group.members.length - 1 === 1 ? '' : 's'}` : `${group.members.length} Readers`)
+    : (me ? 'You' : (group.members[0].display_name || 'Reader'));
+  const score = Number(group.score || 0);
+  return `<div class="reader-row${me ? ' me' : ''}">
+    <div class="rank ${rankClass}">${rank}</div>
+    <div class="reader-name">${esc(title)}${!isTie && me ? ' <small style="color:var(--muted);font-weight:500;">(you)</small>' : ''}</div>
+    <span class="reader-punches">${score} punch${score === 1 ? '' : 'es'}</span>
+  </div>`;
+}
+
+async function renderLeaderboard(){
+  await refreshLeaderboard().catch(() => {});
+  renderLeaderboardPanels();
+}
+
+function renderLeaderboardPanels(){
+  const topEl = document.getElementById('top-readers-list');
+  const relEl = document.getElementById('relative-readers-list');
+  const top   = topFiveGroups();
+  topEl.innerHTML = top.length
+    ? top.map(g => groupRowHtml(g)).join('')
+    : '<div style="padding:20px;text-align:center;color:var(--muted);font-size:14px;font-weight:600">No readers have logged books yet.</div>';
+  const idx = currentGroupIndex();
+  relEl.innerHTML = idx < 0
+    ? '<div style="padding:20px;text-align:center;color:var(--muted);font-size:14px;font-weight:600">You are not ranked yet. Log a book to appear here.</div>'
+    : myWindowGroups().map(g => groupRowHtml(g)).join('');
+}
+
+// ── Modal ────────────────────────────────────────────────────
+function openModal(title, bodyHtml, footerHtml){
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML    = bodyHtml;
+  document.getElementById('modal-footer').innerHTML  = footerHtml;
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  pendingBasketId = null;
+}
+
+// ── Wire up all events ───────────────────────────────────────
+function initEvents(){
+  // Auth form toggles
+  document.getElementById('sw-to-reg').addEventListener('click', e => {
+    e.preventDefault(); hideErr('login-err'); setAuthCard('reg');
+  });
+  document.getElementById('sw-to-login').addEventListener('click', e => {
+    e.preventDefault(); hideErr('reg-err'); setAuthCard('login');
+  });
+
+  // Auth form submissions
+  document.getElementById('login-form').addEventListener('submit', async e => {
+    e.preventDefault(); await processLogin();
+  });
+  document.getElementById('reg-form').addEventListener('submit', async e => {
+    e.preventDefault(); await processRegister();
+  });
+
+  // Sign out
+  document.getElementById('btn-logout').addEventListener('click', async () => {
+    await signOut(auth);
+  });
+
+  // Nav tabs
+  document.querySelectorAll('.nav-btn').forEach(btn =>
+    btn.addEventListener('click', () => showPage(btn.getAttribute('data-page')))
+  );
+
+  // Source radio
+  document.getElementById('src-lib').addEventListener('click',   () => setSource('library'));
+  document.getElementById('src-libby').addEventListener('click', () => setSource('libby'));
+
+  // Double-punch radio
+  document.getElementById('dp-no').addEventListener('click',  () => setDP(false));
+  document.getElementById('dp-yes').addEventListener('click', () => setDP(true));
+
+  // Auto-detect flag words in title field
+  document.getElementById('log-title').addEventListener('input', e => {
+    if(hasFlag(e.target.value)) setDP(true);
+  });
+
+  // Log book button
+  document.getElementById('btn-submit-book').addEventListener('click', logBook);
+
+  // Catalog search
+  document.getElementById('btn-search-cat').addEventListener('click', executeCatalogSearch);
+  document.getElementById('cat-q').addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); executeCatalogSearch(); }
+  });
+
+  // Modal
+  document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+  document.getElementById('modal-bg').addEventListener('click', e => {
+    if(e.target.id === 'modal-bg') closeModal();
+  });
+}
+
+// ── Auth state observer ──────────────────────────────────────
+onAuthStateChanged(auth, async (user) => {
+  if(user){
+    try{
+      await loadMain(user);
+    }catch(err){
+      console.error('loadMain error:', err);
+      clearState();
+      showErr('login-err', 'Error loading your profile. Please sign in again.');
+      try{ await signOut(auth); }catch(_){}
+    }
+  }else{
+    clearState();
+  }
+});
+
+// ── Startup ──────────────────────────────────────────────────
+initEvents();
+setAuthCard('login');
+
+// Auto-refresh leaderboard every 60 s when app is open
+setInterval(() => {
+  if(currentLibraryCard && document.getElementById('main').style.display !== 'none'){
+    refreshLeaderboard().catch(() => {});
+  }
+}, 60000);
+</script>
+</body>
+</html>
