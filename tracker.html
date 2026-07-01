@@ -533,16 +533,16 @@ async function processRegister(){
   try{
     const cred = await createUserWithEmailAndPassword(auth, email, pass);
     // Create patron document
-    await setDoc(doc(db, 'patrons', card), {
-      library_card:        card,
-      display_name:        name,
-      auth_uid:            cred.user.uid,
-      online_account:      true,
-      offline_participant: false,
-      total_books_read:    0,
-      created_at:          serverTimestamp(),
-      updated_at:          serverTimestamp()
-    }, { merge: true });
+    await setDoc(doc(db,"patrons",cardField),{
+  library_card: cardField,
+  auth_uid: userCredential.user.uid,
+  display_name: nameField,
+  name: nameField,
+  offline_participant:false,
+  online_account:true,
+  total_books_read:0,
+  updated_at:new Date()
+},{merge:true});
     // onAuthStateChanged will fire and load the main app
   }catch(err){
     const msg = err.code === 'auth/email-already-in-use'
